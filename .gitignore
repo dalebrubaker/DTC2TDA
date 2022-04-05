@@ -427,3 +427,5 @@ fabric.properties
 obj/
 
 bin/
+/DTCSharp
+/TDAmeritrade

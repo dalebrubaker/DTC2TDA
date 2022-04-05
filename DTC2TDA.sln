@@ -5,19 +5,24 @@ VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTC2TDA", "DTC2TDA\DTC2TDA.csproj", "{AF3C0649-C5D4-45A3-B0EC-2E92AAACB953}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTCCommon", "DTCSharp\DTCCommon\DTCCommon.csproj", "{DC12ED9E-1CB2-4DAC-A43E-50872AA020B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTCCommon", "DTCSharp\DTCCommon\DTCCommon.csproj", "{DC12ED9E-1CB2-4DAC-A43E-50872AA020B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTCClient", "DTCSharp\DTCClient\DTCClient.csproj", "{190659B4-D00B-4113-9C6F-B3FC367A32B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTCClient", "DTCSharp\DTCClient\DTCClient.csproj", "{190659B4-D00B-4113-9C6F-B3FC367A32B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TDAmeritrade", "TDAmeritrade\TDAmeritrade\TDAmeritrade.csproj", "{A60E1D19-9267-4FAC-889C-8E425F6D74C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TDAmeritrade", "TDAmeritrade\TDAmeritrade\TDAmeritrade.csproj", "{A60E1D19-9267-4FAC-889C-8E425F6D74C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TDAmeritrade.Console", "TDAmeritrade\TDAmeritrade.Console\TDAmeritrade.Console.csproj", "{C36B9433-9742-4208-A70E-03BC50FA7F55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TDAmeritrade.Console", "TDAmeritrade\TDAmeritrade.Console\TDAmeritrade.Console.csproj", "{C36B9433-9742-4208-A70E-03BC50FA7F55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TDAmeritrade.DataProtection", "TDAmeritrade\TDAmeritrade.DataProtection\TDAmeritrade.DataProtection.csproj", "{A41CABA5-B771-4717-85D2-407029D61470}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TDAmeritrade.DataProtection", "TDAmeritrade\TDAmeritrade.DataProtection\TDAmeritrade.DataProtection.csproj", "{A41CABA5-B771-4717-85D2-407029D61470}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TDAmeritrade.Tests", "TDAmeritrade\TDAmeritrade.Tests\TDAmeritrade.Tests.csproj", "{3845808D-2267-42B4-B506-49596820D3AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TDAmeritrade.Tests", "TDAmeritrade\TDAmeritrade.Tests\TDAmeritrade.Tests.csproj", "{3845808D-2267-42B4-B506-49596820D3AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TDAmeritrade.Web", "TDAmeritrade\TDAmeritrade.Web\TDAmeritrade.Web.csproj", "{49B1570C-4066-4B56-A908-9CBFBB6FB204}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TDAmeritrade.Web", "TDAmeritrade\TDAmeritrade.Web\TDAmeritrade.Web.csproj", "{49B1570C-4066-4B56-A908-9CBFBB6FB204}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{63A4A689-B54E-45F1-B1E7-4DBE19F635F4}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
