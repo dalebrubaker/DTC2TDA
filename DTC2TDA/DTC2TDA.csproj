@@ -21,4 +21,12 @@
     <PackageReference Include="SerilogTimings" Version="2.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DTCSharp\DTCClient\DTCClient.csproj" />
+    <ProjectReference Include="..\DTCSharp\DTCCommon\DTCCommon.csproj" />
+    <ProjectReference Include="..\DTCSharp\DTCServer\DTCServer.csproj" />
+    <ProjectReference Include="..\TDAmeritradeSharp\TDAmeritradeSharpClient\TDAmeritradeSharpClient.csproj" />
+    <ProjectReference Include="..\TDAmeritradeSharp\TDAmeritradeSharpUI\TDAmeritradeSharpUI.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -16,9 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TDAmeritradeSharpClient", "TDAmeritradeSharp\TDAmeritradeSharpClient\TDAmeritradeSharpClient.csproj", "{0DC0910A-5E02-4366-A48A-A1489C508C6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{29B3A248-407E-4BE9-A9C1-850FF9042736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{29B3A248-407E-4BE9-A9C1-850FF9042736}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTCServer", "DTCSharp\DTCServer\DTCServer.csproj", "{0242B4EC-1FE0-4205-9AEB-804E7EDA6E99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTCServer", "DTCSharp\DTCServer\DTCServer.csproj", "{0242B4EC-1FE0-4205-9AEB-804E7EDA6E99}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TDAmeritradeSharpUI", "TDAmeritradeSharp\TDAmeritradeSharpUI\TDAmeritradeSharpUI.csproj", "{1DD0A8CE-F753-4932-BB1E-1306421787CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{0242B4EC-1FE0-4205-9AEB-804E7EDA6E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0242B4EC-1FE0-4205-9AEB-804E7EDA6E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0242B4EC-1FE0-4205-9AEB-804E7EDA6E99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DD0A8CE-F753-4932-BB1E-1306421787CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DD0A8CE-F753-4932-BB1E-1306421787CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DD0A8CE-F753-4932-BB1E-1306421787CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DD0A8CE-F753-4932-BB1E-1306421787CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
