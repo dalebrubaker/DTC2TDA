@@ -38,6 +38,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageAuth = new System.Windows.Forms.TabPage();
             this.authUserControl1 = new TDAmeritradeSharpUI.AuthUserControl();
+            this.tabPageConnection = new System.Windows.Forms.TabPage();
+            this.connectionUserControl1 = new DTC2TDA.ConnectionUserControl();
             this.tabPageOptions = new System.Windows.Forms.TabPage();
             this.optionsUserControl1 = new DTC2TDA.OptionsUserControl();
             this.tabPageAccounts = new System.Windows.Forms.TabPage();
@@ -50,6 +52,7 @@
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageAuth.SuspendLayout();
+            this.tabPageConnection.SuspendLayout();
             this.tabPageOptions.SuspendLayout();
             this.tabPageAccounts.SuspendLayout();
             this.tabPageData.SuspendLayout();
@@ -98,7 +101,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 444);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 467);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1125, 22);
             this.statusStrip1.TabIndex = 1;
@@ -113,6 +116,7 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPageAuth);
+            this.tabControl1.Controls.Add(this.tabPageConnection);
             this.tabControl1.Controls.Add(this.tabPageOptions);
             this.tabControl1.Controls.Add(this.tabPageAccounts);
             this.tabControl1.Controls.Add(this.tabPageData);
@@ -121,7 +125,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1125, 420);
+            this.tabControl1.Size = new System.Drawing.Size(1125, 443);
             this.tabControl1.TabIndex = 2;
             // 
             // tabPageAuth
@@ -130,7 +134,7 @@
             this.tabPageAuth.Location = new System.Drawing.Point(4, 24);
             this.tabPageAuth.Name = "tabPageAuth";
             this.tabPageAuth.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAuth.Size = new System.Drawing.Size(1117, 392);
+            this.tabPageAuth.Size = new System.Drawing.Size(1117, 415);
             this.tabPageAuth.TabIndex = 0;
             this.tabPageAuth.Text = "Authentication";
             this.tabPageAuth.UseVisualStyleBackColor = true;
@@ -140,8 +144,27 @@
             this.authUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.authUserControl1.Location = new System.Drawing.Point(3, 3);
             this.authUserControl1.Name = "authUserControl1";
-            this.authUserControl1.Size = new System.Drawing.Size(1111, 386);
+            this.authUserControl1.Size = new System.Drawing.Size(1111, 409);
             this.authUserControl1.TabIndex = 0;
+            // 
+            // tabPageConnection
+            // 
+            this.tabPageConnection.Controls.Add(this.connectionUserControl1);
+            this.tabPageConnection.Location = new System.Drawing.Point(4, 24);
+            this.tabPageConnection.Name = "tabPageConnection";
+            this.tabPageConnection.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageConnection.Size = new System.Drawing.Size(1117, 415);
+            this.tabPageConnection.TabIndex = 5;
+            this.tabPageConnection.Text = "Connection";
+            this.tabPageConnection.UseVisualStyleBackColor = true;
+            // 
+            // connectionUserControl1
+            // 
+            this.connectionUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.connectionUserControl1.Location = new System.Drawing.Point(3, 3);
+            this.connectionUserControl1.Name = "connectionUserControl1";
+            this.connectionUserControl1.Size = new System.Drawing.Size(1111, 409);
+            this.connectionUserControl1.TabIndex = 0;
             // 
             // tabPageOptions
             // 
@@ -149,7 +172,7 @@
             this.tabPageOptions.Location = new System.Drawing.Point(4, 24);
             this.tabPageOptions.Name = "tabPageOptions";
             this.tabPageOptions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageOptions.Size = new System.Drawing.Size(1117, 392);
+            this.tabPageOptions.Size = new System.Drawing.Size(1117, 415);
             this.tabPageOptions.TabIndex = 1;
             this.tabPageOptions.Text = "Options";
             this.tabPageOptions.UseVisualStyleBackColor = true;
@@ -159,7 +182,7 @@
             this.optionsUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.optionsUserControl1.Location = new System.Drawing.Point(3, 3);
             this.optionsUserControl1.Name = "optionsUserControl1";
-            this.optionsUserControl1.Size = new System.Drawing.Size(1111, 386);
+            this.optionsUserControl1.Size = new System.Drawing.Size(1111, 409);
             this.optionsUserControl1.TabIndex = 0;
             // 
             // tabPageAccounts
@@ -167,7 +190,7 @@
             this.tabPageAccounts.Controls.Add(this.accountsUserControl1);
             this.tabPageAccounts.Location = new System.Drawing.Point(4, 24);
             this.tabPageAccounts.Name = "tabPageAccounts";
-            this.tabPageAccounts.Size = new System.Drawing.Size(1117, 392);
+            this.tabPageAccounts.Size = new System.Drawing.Size(1117, 415);
             this.tabPageAccounts.TabIndex = 3;
             this.tabPageAccounts.Text = "Accounts";
             this.tabPageAccounts.UseVisualStyleBackColor = true;
@@ -177,7 +200,7 @@
             this.accountsUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.accountsUserControl1.Location = new System.Drawing.Point(0, 0);
             this.accountsUserControl1.Name = "accountsUserControl1";
-            this.accountsUserControl1.Size = new System.Drawing.Size(1117, 392);
+            this.accountsUserControl1.Size = new System.Drawing.Size(1117, 415);
             this.accountsUserControl1.TabIndex = 0;
             // 
             // tabPageData
@@ -185,7 +208,7 @@
             this.tabPageData.Controls.Add(this.dataUserControl1);
             this.tabPageData.Location = new System.Drawing.Point(4, 24);
             this.tabPageData.Name = "tabPageData";
-            this.tabPageData.Size = new System.Drawing.Size(1117, 392);
+            this.tabPageData.Size = new System.Drawing.Size(1117, 415);
             this.tabPageData.TabIndex = 2;
             this.tabPageData.Text = "Data";
             this.tabPageData.UseVisualStyleBackColor = true;
@@ -195,7 +218,7 @@
             this.dataUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataUserControl1.Location = new System.Drawing.Point(0, 0);
             this.dataUserControl1.Name = "dataUserControl1";
-            this.dataUserControl1.Size = new System.Drawing.Size(1117, 392);
+            this.dataUserControl1.Size = new System.Drawing.Size(1117, 415);
             this.dataUserControl1.TabIndex = 0;
             // 
             // tabPageOrders
@@ -203,7 +226,7 @@
             this.tabPageOrders.Controls.Add(this.ordersUserControl1);
             this.tabPageOrders.Location = new System.Drawing.Point(4, 24);
             this.tabPageOrders.Name = "tabPageOrders";
-            this.tabPageOrders.Size = new System.Drawing.Size(1117, 392);
+            this.tabPageOrders.Size = new System.Drawing.Size(1117, 415);
             this.tabPageOrders.TabIndex = 4;
             this.tabPageOrders.Text = "Orders";
             this.tabPageOrders.UseVisualStyleBackColor = true;
@@ -213,26 +236,29 @@
             this.ordersUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ordersUserControl1.Location = new System.Drawing.Point(0, 0);
             this.ordersUserControl1.Name = "ordersUserControl1";
-            this.ordersUserControl1.Size = new System.Drawing.Size(1117, 392);
+            this.ordersUserControl1.Size = new System.Drawing.Size(1117, 415);
             this.ordersUserControl1.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1125, 466);
+            this.ClientSize = new System.Drawing.Size(1125, 489);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "DTC2TDA";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPageAuth.ResumeLayout(false);
+            this.tabPageConnection.ResumeLayout(false);
             this.tabPageOptions.ResumeLayout(false);
             this.tabPageAccounts.ResumeLayout(false);
             this.tabPageData.ResumeLayout(false);
@@ -262,5 +288,7 @@
         private TabPage tabPageOrders;
         private OptionsUserControl optionsUserControl1;
         private OrdersUserControl ordersUserControl1;
+        private TabPage tabPageConnection;
+        private ConnectionUserControl connectionUserControl1;
     }
 }

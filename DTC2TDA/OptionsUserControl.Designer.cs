@@ -53,9 +53,9 @@
             this.checkBoxUseAccountDisplayNames.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxUseAccountDisplayNames.Location = new System.Drawing.Point(3, 55);
             this.checkBoxUseAccountDisplayNames.Name = "checkBoxUseAccountDisplayNames";
-            this.checkBoxUseAccountDisplayNames.Size = new System.Drawing.Size(174, 19);
+            this.checkBoxUseAccountDisplayNames.Size = new System.Drawing.Size(329, 19);
             this.checkBoxUseAccountDisplayNames.TabIndex = 1;
-            this.checkBoxUseAccountDisplayNames.Text = "Use Account Display Names";
+            this.checkBoxUseAccountDisplayNames.Text = "Use Account Display Names Instead of Account Numbers";
             this.toolTip1.SetToolTip(this.checkBoxUseAccountDisplayNames, "Check to use TD Ameritrade Account Display Names instead of numeric account numbe" +
         "rs.");
             this.checkBoxUseAccountDisplayNames.UseVisualStyleBackColor = true;
