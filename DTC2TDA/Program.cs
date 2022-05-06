@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Configuration;
+using Serilog;
+
 namespace DTC2TDA;
 
 internal static class Program
@@ -25,6 +28,21 @@ internal static class Program
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
+        
+        CreateSerilogLogger();
         Application.Run(new MainForm());
+    }
+
+
+    private static void CreateSerilogLogger()
+    {
+        var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddUserSecrets<MainForm>()
+                .Build();
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom
+            .Configuration(configuration)
+            .CreateLogger();
     }
 }
