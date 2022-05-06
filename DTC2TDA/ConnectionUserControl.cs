@@ -113,6 +113,8 @@ public partial class ConnectionUserControl : UserControl
 
     private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
     {
+        _serverListening?.Dispose();
+        _serverHistorical?.Dispose();
         SaveConfig();
     }
 
