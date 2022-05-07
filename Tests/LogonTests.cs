@@ -25,7 +25,9 @@ public class LogonTests : IClassFixture<TestFixture>, IDisposable
     [Fact]
     public void LogonResponseShouldBeCorrect()
     {
-        var client = TestFixture.GetClientLoggedOntoTestServer();
+        var port = TestFixture.NextServerPort;
+        using var server = TestFixture.StartTestServerAsync(port);
+        using var client = TestFixture.ConnectClient(port);
         Assert.True(client.LogonResponse.IsTradingSupported);
     }
 }

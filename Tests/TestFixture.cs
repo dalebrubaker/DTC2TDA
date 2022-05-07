@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
 using Domain;
 using DTCClient;
 using DTCPB;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using TDAmeritradeSharpClient;
 using Xunit;
 
 namespace Tests;
@@ -56,34 +58,24 @@ public class TestFixture : IDisposable
             .CreateLogger();
     }
 
-    private static ServiceDTC StartTestServer(int port)
+    public static async Task<ServiceDTC> StartTestServerAsync(int port)
     {
-        var server = new ServiceDTC(IPAddress.Loopback, port);
+        var client = new Client();
+        await client.RequireNotExpiredTokensAsync().ConfigureAwait(false);
+        var clientStream = new ClientStream(client);
+        var server = new ServiceDTC(IPAddress.Loopback, port, client, clientStream);
         server.StartServer();
         Assert.NotNull(server);
         return server;
     }
 
-    private static ClientDTC ConnectClient(int port, EncodingEnum encoding = EncodingEnum.ProtocolBuffers)
+    public static ClientDTC ConnectClient(int port, EncodingEnum encoding = EncodingEnum.ProtocolBuffers)
     {
         var client = new ClientDTC();
         client.StartClient("localhost", port);
-        return ConnectClient(encoding, client);
-    }
-
-    private static ClientDTC ConnectClient(EncodingEnum encoding, ClientDTC client)
-    {
         var (loginResponse, error) = client.Logon("TestClient", requestedEncoding: encoding);
         Assert.NotNull(loginResponse);
         Assert.False(error.IsError);
-        return client;
-    }
-
-    public static ClientDTC GetClientLoggedOntoTestServer()
-    {
-        var port = NextServerPort;
-        using var server = StartTestServer(port);
-        var client = ConnectClient(port);
         return client;
     }
 }

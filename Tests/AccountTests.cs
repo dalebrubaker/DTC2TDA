@@ -20,10 +20,12 @@ public class AccountTests : IClassFixture<TestFixture>, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    [Fact(Skip = "WIP")]
+    [Fact]
     public void GetTradeAccountsTest()
     {
-        var client = TestFixture.GetClientLoggedOntoTestServer();
+        var port = TestFixture.NextServerPort;
+        using var server = TestFixture.StartTestServerAsync(port);
+        using var client = TestFixture.ConnectClient(port);
         var accountNames = client.GetTradeAccounts();
         Assert.NotEmpty(accountNames);
     }

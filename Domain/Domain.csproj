@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DTCSharp\DTCServer\DTCServer.csproj" />
+      <ProjectReference Include="..\TDAmeritradeSharp\TDAmeritradeSharpClient\TDAmeritradeSharpClient.csproj" />
     </ItemGroup>
 
 </Project>

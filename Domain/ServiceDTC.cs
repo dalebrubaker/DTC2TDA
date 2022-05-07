@@ -4,22 +4,28 @@ using DTCCommon;
 using DTCPB;
 using DTCServer;
 using Serilog;
+using TDAmeritradeSharpClient;
 
 namespace Domain;
 
 public sealed class ServiceDTC : ListenerDTC
 {
+    private readonly Client _client;
+    private readonly ClientStream _clientStream;
     private static readonly ILogger s_logger = Log.ForContext(MethodBase.GetCurrentMethod()!.DeclaringType!);
 
-    public ServiceDTC(IPAddress ipAddress, int port) : base(ipAddress, port)
+    public ServiceDTC(IPAddress ipAddress, int port, Client client, ClientStream clientStream) : base(ipAddress, port)
     {
+        _client = client;
+        _clientStream = clientStream;
     }
 
-    protected override Task HandleRequestAsync(ClientHandlerDTC clientHandler, MessageProto messageProto)
+    protected override async Task HandleRequestAsync(ClientHandlerDTC clientHandler, MessageProto messageProto)
     {
         if (messageProto.IsExtended)
         {
-            return HandleRequestExtendedAsync(clientHandler, messageProto);
+            await HandleRequestExtendedAsync(clientHandler, messageProto).ConfigureAwait(false);
+            return;
         }
         var messageType = messageProto.MessageType;
         var message = messageProto.Message;
@@ -32,7 +38,6 @@ public sealed class ServiceDTC : ListenerDTC
                     // This is informational only. Request already has been handled by the clientHandler
                     break;
                 }
-
             case DTCMessageType.LogonRequest:
                 // Documented at See https://dtcprotocol.org/index.php?page=doc/DTCMessages_AuthenticationConnectionMonitoringMessages.php#Messages-LOGON_RESPONSE
                 var logonRequest = (LogonRequest)message;
@@ -56,68 +61,25 @@ public sealed class ServiceDTC : ListenerDTC
                 };
                 clientHandler.SendResponse(DTCMessageType.LogonResponse, logonResponse);
                 break;
-
+            case DTCMessageType.TradeAccountsRequest:
+                var tradeAccountsRequest = (TradeAccountsRequest)message;
+                var accounts = (await _client.GetAccountsAsync().ConfigureAwait(false)).ToList();
+                for (var i = 0; i < accounts.Count; i++)
+                {
+                    var account = accounts[i];
+                    var tradeAccountResponse = new TradeAccountResponse
+                    {
+                        TotalNumberMessages = accounts.Count,
+                        MessageNumber = i + 1,
+                        TradeAccount = account.SecuritiesAccount.AccountId, // TODO use DisplayName if that option is set
+                        RequestID = tradeAccountsRequest.RequestID
+                    };
+                    clientHandler.SendResponse(DTCMessageType.TradeAccountResponse, tradeAccountResponse);
+                }
+                break;
             case DTCMessageType.HistoricalPriceDataRequest:
-                var historicalPriceDataRequest = (HistoricalPriceDataRequest)message;
-                // HistoricalPriceDataResponseHeader.UseZLibCompressionBool = historicalPriceDataRequest.UseZLibCompressionBool;
-                // clientHandler.SendResponse(DTCMessageType.HistoricalPriceDataResponseHeader, HistoricalPriceDataResponseHeader);
-                // var numSent = 0;
-                // for (int i = 0; i < HistoricalPriceDataRecordResponses.Count; i++)
-                // {
-                //     var historicalPriceDataRecordResponse = HistoricalPriceDataRecordResponses[i];
-                //     if (historicalPriceDataRecordResponse.StartDateTime >= historicalPriceDataRequest.StartDateTime)
-                //     {
-                //         numSent++;
-                //         clientHandler.SendResponse(DTCMessageType.HistoricalPriceDataRecordResponse, historicalPriceDataRecordResponse);
-                //     }
-                // }
-
-                // This demonstrates the DTC rule that an empty record may be sent with IsFinalRecordBool.HistoricalPriceDataRecordResponses.Count - 1
-                //  Probably better design IMHO to set IsFinalRecordBool when i == HistoricalPriceDataRecordResponses.Count - 1
-                var historicalPriceDataRecordResponseFinal = new HistoricalPriceDataRecordResponse();
-                historicalPriceDataRecordResponseFinal.IsFinalRecordBool = true;
-                clientHandler.SendResponse(DTCMessageType.HistoricalPriceDataRecordResponse, historicalPriceDataRecordResponseFinal);
-                ;
-                if (historicalPriceDataRequest.UseZLibCompressionBool)
-                {
-                    clientHandler.EndZippedHistorical();
-                }
-
-                // To be like SierraChart you can uncomment the following line to make this a historical client with one-time use 
-                // clientHandler.Dispose();
-                break;
             case DTCMessageType.MarketDataRequest:
-                var marketDataRequest = (MarketDataRequest)message;
-                switch (marketDataRequest.RequestAction)
-                {
-                    case RequestActionEnum.RequestActionUnset:
-                        break;
-                    case RequestActionEnum.Subscribe:
-                        // SendSnapshot(clientHandler);
-                        // SendMarketData(clientHandler, marketDataRequest);
-                        break;
-                    case RequestActionEnum.Unsubscribe:
-                        // stop sending data
-                        break;
-                    case RequestActionEnum.Snapshot:
-                        // SendSnapshot(clientHandler);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-                break;
             case DTCMessageType.SecurityDefinitionForSymbolRequest:
-                var securityDefinitionForSymbolRequest = (SecurityDefinitionForSymbolRequest)message;
-                var securityDefinitionResponse = new SecurityDefinitionResponse
-                {
-                    RequestID = securityDefinitionForSymbolRequest.RequestID,
-                    Symbol = securityDefinitionForSymbolRequest.Symbol,
-                    MinPriceIncrement = 0.25f,
-                    Description = "Description must not be empty."
-                };
-                //s_logger.Debug("Sending SecurityDefinitionResponse");
-                clientHandler.SendResponse(DTCMessageType.SecurityDefinitionResponse, securityDefinitionResponse);
-                break;
             case DTCMessageType.MarketDataReject:
             case DTCMessageType.MarketDataSnapshot:
             case DTCMessageType.MarketDataSnapshotInt:
@@ -170,8 +132,6 @@ public sealed class ServiceDTC : ListenerDTC
             case DTCMessageType.CurrentPositionsRequest:
             case DTCMessageType.CurrentPositionsReject:
             case DTCMessageType.PositionUpdate:
-            case DTCMessageType.TradeAccountsRequest:
-                break;
             case DTCMessageType.ExchangeListRequest:
             case DTCMessageType.SymbolsForExchangeRequest:
             case DTCMessageType.UnderlyingSymbolsForExchangeRequest:
@@ -190,8 +150,15 @@ public sealed class ServiceDTC : ListenerDTC
             case DTCMessageType.JournalEntryAdd:
             case DTCMessageType.JournalEntriesRequest:
             case DTCMessageType.HistoricalMarketDepthDataRequest:
+            case DTCMessageType.MarketDepthRequest:
+            case DTCMessageType.MarketOrdersRequest:
+                var generalLogMessage = new GeneralLogMessage
+                {
+                    MessageText = $"Not supported yet: {message}"
+                };
+                clientHandler.SendResponse(DTCMessageType.GeneralLogMessage, generalLogMessage);
+                
                 throw new NotImplementedException($"{messageType}");
-
             case DTCMessageType.MessageTypeUnset:
             case DTCMessageType.LogonResponse:
             case DTCMessageType.EncodingResponse:
@@ -217,8 +184,6 @@ public sealed class ServiceDTC : ListenerDTC
                 throw new NotSupportedException($"Unexpected request {messageType} in {GetType().Name}.{nameof(HandleRequestAsync)}");
             case DTCMessageType.MarketDataUpdateBidAskFloatWithMicroseconds:
             case DTCMessageType.MarketDataUpdateSessionVolume:
-            case DTCMessageType.MarketDepthRequest:
-            case DTCMessageType.MarketOrdersRequest:
             case DTCMessageType.MarketOrdersReject:
             case DTCMessageType.MarketOrdersAdd:
             case DTCMessageType.MarketOrdersModify:
@@ -231,7 +196,6 @@ public sealed class ServiceDTC : ListenerDTC
         }
         var msg = $"{messageType}:{message}";
         OnMessage(msg);
-        return Task.CompletedTask;
     }
 
     private Task HandleRequestExtendedAsync(ClientHandlerDTC clientHandler, MessageProto messageProto)

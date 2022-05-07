@@ -1,8 +1,12 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
+using System.Security.Authentication;
 using System.Text.Json;
 using Domain;
 using Domain.ViewModels;
+using Serilog;
+using TDAmeritradeSharpClient;
 
 // ReSharper disable LocalizableElement
 
@@ -10,6 +14,8 @@ namespace DTC2TDA;
 
 public partial class ConnectionUserControl : UserControl
 {
+    private static readonly ILogger s_logger = Log.ForContext(MethodBase.GetCurrentMethod()?.DeclaringType!);
+
     private IPAddress? _ipAddress;
     private ServiceDTC? _serverHistorical;
     private ServiceDTC? _serverListening;
@@ -55,14 +61,47 @@ public partial class ConnectionUserControl : UserControl
         return ipAddress;
     }
 
-    private void btnStartListening_Click(object sender, EventArgs e)
+    private async void btnStartListening_Click(object sender, EventArgs e)
     {
         btnStartListening.Enabled = false;
         btnStopListening.Enabled = true;
-        _serverListening = new ServiceDTC(_ipAddress!, _viewModel!.PortListening);
+        var tdaClient = await GetValidatedClientAsync();
+        if (tdaClient == null)
+        {
+            btnStartListening.Enabled = true;
+            btnStopListening.Enabled = false;
+            return;
+        }
+        var tdaClientStreaming = new ClientStream(tdaClient);
+        _serverListening = new ServiceDTC(_ipAddress!, _viewModel!.PortListening, tdaClient, tdaClientStreaming);
         _serverListening.MessageEvent += ServerOnMessageEvent;
         _serverListening.StartServer();
         logControl1.LogMessage($"Started {_serverListening}");
+    }
+
+    /// <summary>
+    /// Return a valid client, or null after show message box if error
+    /// </summary>
+    /// <returns></returns>
+    private static async Task<Client?> GetValidatedClientAsync()
+    {
+        var tdaClient = new Client();
+        try
+        {
+            await tdaClient.RequireNotExpiredTokensAsync();
+        }
+        catch (AuthenticationException)
+        {
+            MessageBox.Show("Not authenticated. Authenticate first, using the Authentication tab.");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            s_logger.Error(ex, "{Message}", ex.Message);
+            MessageBox.Show($"Unexpected error: {ex.Message}");
+            return null;
+        }
+        return tdaClient;
     }
 
     private void btnStopListening_Click(object sender, EventArgs e)
@@ -73,11 +112,19 @@ public partial class ConnectionUserControl : UserControl
         logControl1.LogMessage($"Stopped {_serverListening}");
     }
 
-    private void btnStartHistorical_Click(object sender, EventArgs e)
+    private async void btnStartHistorical_Click(object sender, EventArgs e)
     {
         btnStartHistorical.Enabled = false;
         btnStopHistorical.Enabled = true;
-        _serverHistorical = new ServiceDTC(_ipAddress!, _viewModel!.PortHistorical);
+        var tdaClient = await GetValidatedClientAsync();
+        if (tdaClient == null)
+        {
+            btnStartHistorical.Enabled = true;
+            btnStopHistorical.Enabled = false;
+            return;
+        }
+        var tdaClientStreaming = new ClientStream(tdaClient);
+        _serverHistorical = new ServiceDTC(_ipAddress!, _viewModel!.PortHistorical, tdaClient, tdaClientStreaming);
         _serverHistorical.MessageEvent += ServerOnMessageEvent;
         _serverHistorical.StartServer();
         logControl1.LogMessage($"Started {_serverHistorical}");
