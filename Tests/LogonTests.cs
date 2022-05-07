@@ -1,14 +1,33 @@
-using FluentAssertions;
+using System;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Tests;
 
-public class LogonTests
+[Collection("NotParallel collection")]
+public class LogonTests : IClassFixture<TestFixture>, IDisposable
 {
+    private readonly TestFixture _fixture;
+    private readonly ITestOutputHelper _output;
+
+    public LogonTests(TestFixture fixture, ITestOutputHelper output)
+    {
+        _fixture = fixture;
+        _output = output;
+    }
+
+    public void Dispose()
+    {
+        _output.WriteLine("Disposing");
+        GC.SuppressFinalize(this);
+    }
+
     [Fact]
     public void LogonResponseShouldBeCorrect()
     {
-        var tmp = true;
-        tmp.Should().Be(true);
+        var port = _fixture.NextServerPort;
+        using var server = TestFixture.StartTestServer(port);
+        var client = TestFixture.ConnectClient(port);
+        Assert.True(client.LogonResponse.IsTradingSupported);
     }
 }
