@@ -5,14 +5,12 @@ using Xunit.Abstractions;
 namespace Tests;
 
 [Collection("NotParallel collection")]
-public class LogonTests : IClassFixture<TestFixture>, IDisposable
+public class AccountTests : IClassFixture<TestFixture>, IDisposable
 {
-    private readonly TestFixture _fixture;
     private readonly ITestOutputHelper _output;
 
-    public LogonTests(TestFixture fixture, ITestOutputHelper output)
+    public AccountTests(ITestOutputHelper output)
     {
-        _fixture = fixture;
         _output = output;
     }
 
@@ -22,10 +20,11 @@ public class LogonTests : IClassFixture<TestFixture>, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    [Fact]
-    public void LogonResponseShouldBeCorrect()
+    [Fact(Skip = "WIP")]
+    public void GetTradeAccountsTest()
     {
         var client = TestFixture.GetClientLoggedOntoTestServer();
-        Assert.True(client.LogonResponse.IsTradingSupported);
+        var accountNames = client.GetTradeAccounts();
+        Assert.NotEmpty(accountNames);
     }
 }

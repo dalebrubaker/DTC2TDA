@@ -26,7 +26,7 @@ public class TestFixture : IDisposable
         Log.Verbose("Starting {Counter} {ClassType}", s_counterStart++, GetType().Name);
     }
 
-    public int NextServerPort
+    public static int NextServerPort
     {
         get
         {
@@ -56,7 +56,7 @@ public class TestFixture : IDisposable
             .CreateLogger();
     }
 
-    public static ServiceDTC StartTestServer(int port)
+    private static ServiceDTC StartTestServer(int port)
     {
         var server = new ServiceDTC(IPAddress.Loopback, port);
         server.StartServer();
@@ -64,7 +64,7 @@ public class TestFixture : IDisposable
         return server;
     }
 
-    public static ClientDTC ConnectClient(int port, EncodingEnum encoding = EncodingEnum.ProtocolBuffers)
+    private static ClientDTC ConnectClient(int port, EncodingEnum encoding = EncodingEnum.ProtocolBuffers)
     {
         var client = new ClientDTC();
         client.StartClient("localhost", port);
@@ -76,6 +76,14 @@ public class TestFixture : IDisposable
         var (loginResponse, error) = client.Logon("TestClient", requestedEncoding: encoding);
         Assert.NotNull(loginResponse);
         Assert.False(error.IsError);
+        return client;
+    }
+
+    public static ClientDTC GetClientLoggedOntoTestServer()
+    {
+        var port = NextServerPort;
+        using var server = StartTestServer(port);
+        var client = ConnectClient(port);
         return client;
     }
 }

@@ -171,6 +171,7 @@ public sealed class ServiceDTC : ListenerDTC
             case DTCMessageType.CurrentPositionsReject:
             case DTCMessageType.PositionUpdate:
             case DTCMessageType.TradeAccountsRequest:
+                break;
             case DTCMessageType.ExchangeListRequest:
             case DTCMessageType.SymbolsForExchangeRequest:
             case DTCMessageType.UnderlyingSymbolsForExchangeRequest:
