@@ -78,4 +78,11 @@ public class TestFixture : IDisposable
         Assert.False(error.IsError);
         return client;
     }
+
+    public static async Task<bool> IsClientAvailableAsync()
+    {
+        var clientAvailableCheck = new Client();
+        await clientAvailableCheck.RequireNotExpiredTokensAsync().ConfigureAwait(false);
+        return clientAvailableCheck.IsSignedIn;
+    }
 }

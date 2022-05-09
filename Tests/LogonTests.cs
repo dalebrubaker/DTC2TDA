@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using TDAmeritradeSharpClient;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -23,8 +25,13 @@ public class LogonTests : IClassFixture<TestFixture>, IDisposable
     }
 
     [Fact]
-    public void LogonResponseShouldBeCorrect()
+    public async Task LogonResponseShouldBeCorrect()
     {
+        if (!await TestFixture.IsClientAvailableAsync().ConfigureAwait(false))
+        {
+            // Return, don't fail, on CI machine
+            return;
+        }
         var port = TestFixture.NextServerPort;
         using var server = TestFixture.StartTestServerAsync(port);
         using var client = TestFixture.ConnectClient(port);
