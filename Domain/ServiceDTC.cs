@@ -10,15 +10,18 @@ namespace Domain;
 
 public sealed class ServiceDTC : ListenerDTC
 {
+    private static readonly ILogger s_logger = Log.ForContext(MethodBase.GetCurrentMethod()!.DeclaringType!);
+    private readonly AccountDisplayNamesToIdsMap _accountDisplayNamesToIdsMap = new("Map DisplayNames to Ids");
     private readonly Client _client;
     private readonly ClientStream _clientStream;
-    private static readonly ILogger s_logger = Log.ForContext(MethodBase.GetCurrentMethod()!.DeclaringType!);
 
     public ServiceDTC(IPAddress ipAddress, int port, Client client, ClientStream clientStream) : base(ipAddress, port)
     {
         _client = client;
         _clientStream = clientStream;
     }
+
+    private static bool UseAccountDisplayNames => Globals.UseAccountDisplayNames;
 
     protected override async Task HandleRequestAsync(ClientHandlerDTC clientHandler, MessageProto messageProto)
     {
@@ -67,11 +70,27 @@ public sealed class ServiceDTC : ListenerDTC
                 for (var i = 0; i < accounts.Count; i++)
                 {
                     var account = accounts[i];
+                    var accountId = account.SecuritiesAccount.AccountId;
+                    if (UseAccountDisplayNames)
+                    {
+                        _accountDisplayNamesToIdsMap.TryGetValueAccountDisplayName(accountId, out var displayName);
+                        if (displayName == null)
+                        {
+                            // Maybe the first time. Add it if possible
+                            var principalAccount = await _client.GetAccountPrincipalInfoAsync(accountId).ConfigureAwait(false);
+                            displayName = principalAccount?.DisplayName;
+                            if (displayName != null)
+                            {
+                                _accountDisplayNamesToIdsMap.Add(accountId, displayName);
+                                accountId = displayName;
+                            }
+                        }
+                    }
                     var tradeAccountResponse = new TradeAccountResponse
                     {
                         TotalNumberMessages = accounts.Count,
                         MessageNumber = i + 1,
-                        TradeAccount = account.SecuritiesAccount.AccountId, // TODO use DisplayName if that option is set
+                        TradeAccount = accountId,
                         RequestID = tradeAccountsRequest.RequestID
                     };
                     clientHandler.SendResponse(DTCMessageType.TradeAccountResponse, tradeAccountResponse);
@@ -157,7 +176,7 @@ public sealed class ServiceDTC : ListenerDTC
                     MessageText = $"Not supported yet: {message}"
                 };
                 clientHandler.SendResponse(DTCMessageType.GeneralLogMessage, generalLogMessage);
-                
+
                 throw new NotImplementedException($"{messageType}");
             case DTCMessageType.MessageTypeUnset:
             case DTCMessageType.LogonResponse:

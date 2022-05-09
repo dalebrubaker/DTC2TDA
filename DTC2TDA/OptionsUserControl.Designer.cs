@@ -29,29 +29,24 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.checkBoxAlwaysOnTop = new System.Windows.Forms.CheckBox();
+            this.optionsUserControlViewModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.checkBoxUseAccountDisplayNames = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.optionsUserControlViewModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // checkBoxAlwaysOnTop
+            // optionsUserControlViewModelBindingSource
             // 
-            this.checkBoxAlwaysOnTop.AutoSize = true;
-            this.checkBoxAlwaysOnTop.Location = new System.Drawing.Point(3, 30);
-            this.checkBoxAlwaysOnTop.Name = "checkBoxAlwaysOnTop";
-            this.checkBoxAlwaysOnTop.Size = new System.Drawing.Size(101, 19);
-            this.checkBoxAlwaysOnTop.TabIndex = 0;
-            this.checkBoxAlwaysOnTop.Text = "Always on top";
-            this.toolTip1.SetToolTip(this.checkBoxAlwaysOnTop, "Check to keep this window above other windows.");
-            this.checkBoxAlwaysOnTop.UseVisualStyleBackColor = true;
+            this.optionsUserControlViewModelBindingSource.DataSource = typeof(Domain.ViewModels.OptionsUserControlViewModel);
             // 
             // checkBoxUseAccountDisplayNames
             // 
             this.checkBoxUseAccountDisplayNames.AutoSize = true;
             this.checkBoxUseAccountDisplayNames.Checked = true;
             this.checkBoxUseAccountDisplayNames.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUseAccountDisplayNames.Location = new System.Drawing.Point(3, 55);
+            this.checkBoxUseAccountDisplayNames.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.optionsUserControlViewModelBindingSource, "UseAccountDisplayNames", true));
+            this.checkBoxUseAccountDisplayNames.Location = new System.Drawing.Point(3, 27);
             this.checkBoxUseAccountDisplayNames.Name = "checkBoxUseAccountDisplayNames";
             this.checkBoxUseAccountDisplayNames.Size = new System.Drawing.Size(329, 19);
             this.checkBoxUseAccountDisplayNames.TabIndex = 1;
@@ -75,19 +70,19 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.checkBoxUseAccountDisplayNames);
-            this.Controls.Add(this.checkBoxAlwaysOnTop);
             this.Name = "OptionsUserControl";
             this.Size = new System.Drawing.Size(748, 418);
+            this.Load += new System.EventHandler(this.OptionsUserControl_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.optionsUserControlViewModelBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private CheckBox checkBoxAlwaysOnTop;
         private ToolTip toolTip1;
         private CheckBox checkBoxUseAccountDisplayNames;
         private Label label1;
+        private BindingSource optionsUserControlViewModelBindingSource;
     }
 }

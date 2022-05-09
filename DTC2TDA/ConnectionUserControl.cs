@@ -80,7 +80,7 @@ public partial class ConnectionUserControl : UserControl
     }
 
     /// <summary>
-    /// Return a valid client, or null after show message box if error
+    ///     Return a valid client, or null after show message box if error
     /// </summary>
     /// <returns></returns>
     private static async Task<Client?> GetValidatedClientAsync()
@@ -156,13 +156,6 @@ public partial class ConnectionUserControl : UserControl
             PortListening = 49999,
             ServerName = "localhost"
         };
-    }
-
-    private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
-    {
-        _serverListening?.Dispose();
-        _serverHistorical?.Dispose();
-        SaveConfig();
     }
 
     private void SaveConfig()

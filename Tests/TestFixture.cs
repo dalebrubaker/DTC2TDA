@@ -25,6 +25,7 @@ public class TestFixture : IDisposable
     {
         // Allow logging during Tests
         CreateSerilogLogger();
+        Globals.UseAccountDisplayNames = true; // for all unit tests
         Log.Verbose("Starting {Counter} {ClassType}", s_counterStart++, GetType().Name);
     }
 

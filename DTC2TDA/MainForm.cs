@@ -39,6 +39,7 @@ public partial class MainForm : Form
             var json = File.ReadAllText(SettingsPath);
             Settings = JsonSerializer.Deserialize<MainFormSettings>(json) ?? new MainFormSettings();
             WindowPlacement.RestoreWindow(Handle, Settings.WindowPlacementJson);
+            tabControl1.SelectedTab = tabPageOptions; // to set global options at startup before showing the previously-selected tab
             tabControl1.SelectedIndex = Settings.TabIndex;
         }
         //mainFormSettingsBindingSource.DataSource = Settings;
