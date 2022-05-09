@@ -82,6 +82,11 @@ public class TestFixture : IDisposable
     public static async Task<bool> IsClientAvailableAsync()
     {
         var clientAvailableCheck = new Client();
+        if (clientAvailableCheck.AuthValues == null)
+        {
+            // Can't run on this machine
+            return false;
+        }
         await clientAvailableCheck.RequireNotExpiredTokensAsync().ConfigureAwait(false);
         return clientAvailableCheck.IsSignedIn;
     }
