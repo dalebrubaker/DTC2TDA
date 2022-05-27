@@ -1,3 +1,5 @@
+Abandoned - TDA can't even send a reject message on a rejected order.
+
 DTC Server for TD Ameritrade
 =
 
